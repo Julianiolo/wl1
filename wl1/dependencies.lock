@@ -1,0 +1,27 @@
+dependencies:
+  chmorgan/esp-libhelix-mp3:
+    component_hash: cbb76089dc2c5749f7b470e2e70aedc44c9da519e04eb9a67d4c7ec275229e53
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 1.0.3
+  espressif/arduino-esp32:
+    component_hash: e946617ee6bec30ef0cff505bc537e658a80d7b9222c060e225bf748f2029442
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 3.0.0-alpha2
+  espressif/mdns:
+    component_hash: 810ec139689ae93bf42520d05de4855fbb68f7140ef67797d91d8d61829589cb
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 1.2.2
+  idf:
+    component_hash: null
+    source:
+      type: idf
+    version: 5.1.1
+manifest_hash: 1ea06fbb01d7eef33abfaf2377da49b9734b2fbef6452a474ec30dff54623ebe
+target: esp32s2
+version: 1.0.0
