@@ -1,4 +1,4 @@
 idf_component_register(
-    SRCS "main.cpp"
-    INCLUDE_DIRS ""
+    SRCS "sensors.cpp" "main.cpp" "libs/DS3231/DS3231.cpp"
+    INCLUDE_DIRS "libs"
 )

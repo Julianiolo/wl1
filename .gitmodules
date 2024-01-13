@@ -1,0 +1,3 @@
+[submodule "wl1/main/libs/DS3231"]
+	path = wl1/main/libs/DS3231
+	url = https://github.com/Julianiolo/DS3231.git

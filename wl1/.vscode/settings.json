@@ -13,5 +13,6 @@
     ],
     "idf.portWin": "COM1",
     "idf.pythonBinPathWin": "D:/Programme/code/Espressif/python_env/idf5.1_py3.11_env/Scripts/python.exe",
-    "idf.toolsPathWin": "D:\\Programme\\code\\Espressif"
+    "idf.toolsPathWin": "D:\\Programme\\code\\Espressif",
+    "cmake.configureOnOpen": false
 }
