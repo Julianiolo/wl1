@@ -7,6 +7,18 @@
 #define WL1_PIN_SDA 0
 #define WL1_PIN_SCL 0
 
+#define WL1_PIN_MISO 0
+#define WL1_PIN_MOSI 0
+#define WL1_PIN_CLK 0
+
+#define WL1_PIN_SD_CS GPIO_NUM_0
+
+
+// Internet:
+#define WL1_ASWER_TIME 1000
+
+
+#define PRIuSIZE "u"
 
 #define WL1_DEBUG 1
 
@@ -17,5 +29,10 @@
 #define WL1_DLOG(_msg_) // do nothing
 #define WL1_DLOGF(_msg_, ...) // do nothing
 #endif
+
+struct ERR {
+    uint8_t error_code = 0;
+    uint8_t errno_num = 0;
+};
 
 #endif

@@ -1,6 +1,9 @@
 #include "Arduino.h"
 #include "Wire.h"
 #include "esp_log.h"
+#include "nvs_flash.h"
+#include <cstdio>  // snprintf
+#include <cinttypes> // PRIu16 etc.
 
 #include "DS3231/DS3231.h"
 
@@ -15,16 +18,35 @@ wl1/managed_components/espressif__arduino-esp32/libraries/WiFiClientSecure/src/s
 
 #include "config.h"
 #include "sensors.h"
+#include "sending/sending.h"
+#include "data.h"
+
 
 #define TAG "WL1"
 
 DS3231 ds3231;
+
+wl1::DataPoint meas_dp;
+
+RTC_DATA_ATTR ERR last_sd_error;
+RTC_DATA_ATTR ERR last_net_error;
 
 struct Preferences {
     uint8_t send_every;
 } preferences;
 
 esp_sleep_wakeup_cause_t wakeup_reason;
+
+static bool init_nvs() {
+    esp_err_t ret;
+    for(uint8_t i = 0; i<3; i++) {
+        ret = nvs_flash_init();
+        if(ret != ESP_OK) {
+            ESP_LOGE(TAG, "nvs_flash_init failed: %d", ret);
+        }
+    }
+    return ret == ESP_OK;
+}
 
 static bool init_wire(void) {
     for(uint8_t i = 0; i<3; i++) {
@@ -49,12 +71,23 @@ static void wakeup_reason_check(void) {
     }
 }
 
+
+static void goto_sleep() {
+    // TODO
+}
+
 extern "C" void app_main() {
     initArduino();
 
     wakeup_reason_check();
 
-    bool inited_wire = init_wire();
+    const bool inited_nvs = init_nvs();
+
+    if(!inited_nvs) {
+        ESP_LOGE(TAG, "NVS could not be initialized :((");
+    }
+
+    const bool inited_wire = init_wire();
 
     if(!inited_wire) {
         ESP_LOGE(TAG, "Wire could not be initialized :((");
@@ -71,15 +104,23 @@ extern "C" void app_main() {
 
     const bool send_data = curr_time.minute() % preferences.send_every == 0;
 
+    uint8_t init_wifi_error = 0;
     if(send_data) {
-        // init wifi
+        init_wifi_error = sending::init_wifi();
     }
 
     Measurement meas = measure(utc_timestamp);
-    (void)meas;
-
+    meas.last_sd_error = last_sd_error;
+    meas.last_net_error = last_net_error;
     
-    if(send_data) {
-        // send data
-    }
+    measurement_to_buf(&meas, meas_dp.data);
+    wl1::dp_add_hash(&meas_dp);
+
+    wl1::add_dp(meas_dp);
+
+    auto store_res = wl1::store_data(send_data && !init_wifi_error);
+    last_sd_error = store_res.first;
+    last_net_error = store_res.second;
+
+    goto_sleep();
 }

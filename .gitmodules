@@ -1,3 +1,18 @@
 [submodule "wl1/main/libs/DS3231"]
 	path = wl1/main/libs/DS3231
 	url = https://github.com/Julianiolo/DS3231.git
+[submodule "wl1/main/libs/veml3328_Arduino"]
+	path = wl1/main/libs/veml3328_Arduino
+	url = https://github.com/Julianiolo/veml3328_Arduino.git
+[submodule "wl1/main/libs/WireUtils"]
+	path = wl1/main/libs/WireUtils
+	url = https://github.com/Julianiolo/WireUtils.git
+[submodule "wl1/main/libs/veml7700_Arduino"]
+	path = wl1/main/libs/veml7700_Arduino
+	url = https://github.com/Julianiolo/veml7700_Arduino.git
+[submodule "wl1/main/libs/TCA9548"]
+	path = wl1/main/libs/TCA9548
+	url = https://github.com/RobTillaart/TCA9548.git
+[submodule "wl1/main/libs/CPP_Utils"]
+	path = wl1/main/libs/CPP_Utils
+	url = https://github.com/Julianiolo/CPP_Utils.git

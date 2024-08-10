@@ -5,22 +5,16 @@
 
 #include "Arduino.h"
 
+#define WL1_MEASUREMENT_BUFFER_SIZE 256 // TODO
+
 struct Measurement {
     uint32_t timestamp;
 
     
-
     struct VEML3328_M {
         uint8_t measurements_present; // TODO
 
-        /*
-            Bits:
-                  7: Unused
-                6,5: Differential Gain (DG)
-                4,3: Gain
-                2,1: Integration Time (IT)
-                  0: Sensitivity
-        */
+        // stores the meas_ctx_t
         uint8_t config;
 
         // actual data
@@ -29,7 +23,7 @@ struct Measurement {
         uint16_t g;
         uint16_t b;
         uint16_t ir;
-    } veml3328; // size: 1+1+2*5 = 12
+    } veml3328; // size: 1+1+5*2 = 12
 
     struct VEML7700_M {
         uint8_t measurements_present; // TODO
@@ -42,7 +36,7 @@ struct Measurement {
         // actual data
         uint16_t white;
         uint16_t ambient;
-    } veml7700;
+    } veml7700; // size: 1+1+2*2 = 6
 
     struct LTR390UV01_M {
         uint8_t config; // TODO
@@ -53,7 +47,7 @@ struct Measurement {
         */
         uint32_t al; // ambient value
         uint32_t uv;
-    } ltr390uv01;
+    } ltr390uv01; // size: 1+2*4 = 9
 
     struct TMP102_M {
         /*
@@ -61,7 +55,7 @@ struct Measurement {
             MSB set means no value present, rest of bits indicate error
         */
         uint16_t raw_value;
-    } tmp102;
+    } tmp102; // size: 2 = 2
 
     struct AS7341_M {
         // TODO
@@ -85,13 +79,14 @@ struct Measurement {
     } windSpeed;
 
     struct RainGauge_M {
-        uint16_t ticks;        
+        uint16_t ticks;
     } rain_gauge;
 
     uint16_t battery_adc;
     uint16_t solar_adc;
 
-
+    ERR last_sd_error;
+    ERR last_net_error;
 };
 
 Measurement measure(uint32_t timestamp);
